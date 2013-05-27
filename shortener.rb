@@ -42,13 +42,34 @@ eos
 #
 # http://guides.rubyonrails.org/association_basics.html
 class Link < ActiveRecord::Base
+
 end
 
+
 get '/' do
-    form
+    #http://danneu.com/posts/15-a-simple-blog-with-sinatra-and-active-record-some-useful-tools/
+    @link = Link.find(params[:id])
+    redirect "/{@link.long_link}"
+    @long_link = @link.long_link
+    erb '/' + @link.short_link.split('/')[1]
+end
+
+get '/test' do
+    # add a link query for a link. see if we get errors
+    Link.create()
 end
 
 post '/new' do
+    "hello"
+    # @link = Link.new(params[:short_link])
+    # puts @link
+    # if @link.save
+    #     erb "hello world"
+    #     redirect "/{@link.id}"
+    # else
+    #     puts "error"
+    # end
+    # erb "Hello WOrld"
     # PUT CODE HERE TO CREATE NEW SHORTENED LINKS
 end
 

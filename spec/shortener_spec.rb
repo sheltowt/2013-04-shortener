@@ -55,7 +55,7 @@ describe "URL Shortener" do
     it "short-urls redirect correctly" do
       post '/new', :url => 'www.catalystclass.com'
       short_link = last_response.body
-
+      puts short_link
       get '/' + short_link.split('/')[1]
       last_response.should be_redirect 
       follow_redirect!
