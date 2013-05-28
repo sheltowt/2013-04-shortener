@@ -2,6 +2,7 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 require 'active_record'
 require 'pry'
+$count = 0
 
 configure :development, :production do
     ActiveRecord::Base.establish_connection(
@@ -45,37 +46,51 @@ class Link < ActiveRecord::Base
 
 end
 
-
-get '/' do
-    #http://danneu.com/posts/15-a-simple-blog-with-sinatra-and-active-record-some-useful-tools/
-    @link = Link.find(params[:id])
-    redirect "/{@link.long_link}"
-    @long_link = @link.long_link
-    erb '/' + @link.short_link.split('/')[1]
+get '/jquery.js' do
+    send_file 'jquery.js'
 end
 
-get '/test' do
+get '/:url' do
+    p params[:url]
+    print "ALL LINKS:"
+    p Link.all
+    #http://danneu.com/posts/15-a-simple-blog-with-sinatra-and-active-record-some-useful-tools/
+    @link = Link.where(:short_link => params[:url]).first
+    if @link
+        redirect 'http://' + @link.long_link
+    else
+        halt 404
+    end
+end
+
+get '/' do
     # add a link query for a link. see if we get errors
-    Link.create()
+    form
 end
 
 post '/new' do
-    "hello"
-    # @link = Link.new(params[:short_link])
-    # puts @link
+    p params
+    @link = Link.where(:long_link => params[:url]).first
+    if @link
+        'inky.com/' + @link.short_link
+    else
+        $count += 1
+        @link = Link.new(:long_link => params[:url], :short_link => $count.to_s)
+        @link.save
+        'inky.com/' + $count.to_s
+    end
+    #make a short link
+    #add the short link to @link
+    #return short link
+    #@link.long_link
     # if @link.save
-    #     erb "hello world"
     #     redirect "/{@link.id}"
     # else
     #     puts "error"
     # end
-    # erb "Hello WOrld"
-    # PUT CODE HERE TO CREATE NEW SHORTENED LINKS
+    'inky.com/' + @link.short_link
 end
 
-get '/jquery.js' do
-    send_file 'jquery.js'
-end
 
 ####################################################
 ####  Implement Routes to make the specs pass ######

@@ -1,0 +1,26 @@
+rake db:migrate 
+//Active Record will work out which migrations should be run
+will update your db/schema.rb file to match the structure of the datbase
+
+migrations are classes
+provides methods that perform common data definition tsks
+
+add_column
+add_index
+change_column
+change_table
+create_table
+drop_table
+
+Allow links to be shortened by making a POST request to /new
+
+correctyl redirect a shortened link to a corresponding URL
+
+Don't create duplicate short links
+
+Store all the application data in a SQL database using ActiveRecord with migrations
+
+Fill in the corresponding Sinatra API endpoints defined in the spes for shortening links
+
+UNderstand the structure of Sinatra applications
+
